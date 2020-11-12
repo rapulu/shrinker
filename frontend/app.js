@@ -2,10 +2,10 @@ console.log("JS loaded")
 
 var inputForm = document.getElementById("inputForm");
 
-const url = "http://localhost:9090/";
-
 inputForm.addEventListener("submit", (e)=>{
   e.preventDefault()
+
+  var url = document.location
 
   var inputUrl = document.getElementById("urlid").value;
 
