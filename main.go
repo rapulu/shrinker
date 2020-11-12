@@ -49,7 +49,6 @@ func main() {
 //FindURLEndpoint finds the url and redirect to original url
 func FindURLEndpoint(resp http.ResponseWriter, req *http.Request){
 	code := mux.Vars(req)["id"]
-	urlcode := req.Host+"/"+code
 	url :=  &URL{}
 
 	client, err := db.GetMongoClient()
@@ -62,7 +61,7 @@ func FindURLEndpoint(resp http.ResponseWriter, req *http.Request){
 	col := client.Database("testDB").Collection("url")
 
 	//return the inserted document
-	err = col.FindOne(context.TODO(), bson.M{"shorturl": urlcode}).Decode(url)
+	err = col.FindOne(context.TODO(), bson.M{"shorturl": code}).Decode(url)
 	if err != nil {
 		fmt.Fprintf(resp, "Findone ERROR: %v \n", err)
 		return // safely exit script on error
@@ -76,8 +75,7 @@ func FindURLEndpoint(resp http.ResponseWriter, req *http.Request){
 //HandleIncomingRequest Handles incoming request from users
 func HandleIncomingRequest(w http.ResponseWriter, r *http.Request) {
 	url := &URL{}
-	shortcode, _ := generateCode()
-	url.ShortURL = r.Host+"/"+shortcode
+	url.ShortURL, _ = generateCode()
 	dec := json.NewDecoder(r.Body)
 	dec.Decode(url)
 
