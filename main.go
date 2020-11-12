@@ -70,6 +70,7 @@ func FindURLEndpoint(resp http.ResponseWriter, req *http.Request){
 
 	link := "http://"+url.LongURL
 	http.Redirect(resp, req, link, 302)
+	return
 }
 
 //HandleIncomingRequest Handles incoming request from users
