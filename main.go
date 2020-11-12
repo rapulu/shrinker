@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"context"
 	"encoding/json"
 	"errors"
@@ -21,6 +22,11 @@ type URL struct {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	
+	if port == ""{
+		port = "9090"
+	}
 
 	mx := mux.NewRouter()
 	
@@ -36,7 +42,7 @@ func main() {
 
 	mx.PathPrefix("/frontend/").Handler(s)
 
-	http.ListenAndServe(":9090", mx)
+	http.ListenAndServe(":"+port, mx)
 
 }
 
